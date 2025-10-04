@@ -1,5 +1,7 @@
 package com.rfr.metrobankexam.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
@@ -37,14 +39,23 @@ public class CustomerServiceImpl implements CustomerService{
 	        if (customerDto.getCustomerMobile() != null) customer.setCustomerMobile(customerDto.getCustomerMobile());
 	        if (customerDto.getAddress1() != null) customer.setAddress1(customerDto.getAddress1());
 	        if (customerDto.getAddress2() != null) customer.setAddress2(customerDto.getAddress2());
-	        
-	        Savings savings = new Savings();
-	        
-	        if (customerDto.getSavings().get(0).getAccountNumber() != null) savings.setAccountNumber(customerDto.getSavings().get(0).getAccountNumber());
-	        if (customerDto.getSavings().get(0).getAccountType() != null) savings.setAccountType(customerDto.getSavings().get(0).getAccountType());
-	        if (customerDto.getSavings().get(0).getAvailableBalance() != null) savings.setAvailableBalance(customerDto.getSavings().get(0).getAvailableBalance());
-	        
-	        customer.addSavings(savings);
+
+            if (customerDto.getSavings() != null) {
+                customerDto.getSavings().forEach(savingsDto -> {
+                    Savings savings = new Savings();
+
+                    if (savingsDto.getAccountNumber() != null)
+                        savings.setAccountNumber(savingsDto.getAccountNumber());
+
+                    if (savingsDto.getAccountType() != null)
+                        savings.setAccountType(savingsDto.getAccountType());
+
+                    if (savingsDto.getAvailableBalance() != null)
+                        savings.setAvailableBalance(savingsDto.getAvailableBalance());
+
+                    customer.addSavings(savings);
+                });
+            }
 	        
 			// TODO Auto-generated method stub
 	        Customer savedCustomer = customerRepo.save(customer);
@@ -58,7 +69,7 @@ public class CustomerServiceImpl implements CustomerService{
 	                .build();
         } catch (IllegalArgumentException e) {
         	return Response.builder()
-                    .transactionStatusCode(201)
+                    .transactionStatusCode(400)
                     .transactionStatusDescription(e.getMessage())                
                     .build();
         }
@@ -72,7 +83,12 @@ public class CustomerServiceImpl implements CustomerService{
 		        throw new NoSuchElementException("Customer not found");
 		    }
 		    return Response.builder()
-		    		.customer(customer)
+                    .customerNumber(customer.getCustomerNumber())
+                    .customerName(customer.getCustomerName())
+                    .customerMobile(customer.getCustomerMobile())
+                    .address1(customer.getAddress1())
+                    .address2(customer.getAddress2())
+                    .savings(customer.getSavings())
 		            .transactionStatusCode(302)
 		            .transactionStatusDescription("Customer Account found")                
 		            .build();
