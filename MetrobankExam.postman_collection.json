@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "7b234ae6-30a1-45df-938d-f60d042ab903",
+		"name": "MetrobankExam",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34255989"
+	},
+	"item": [
+		{
+			"name": "create customer - no account type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"customerName\":\"Test\",\r\n   \"customerMobile\":\"09081234567\",\r\n   \"customerEmail\": \"test12345@gmail.com\",\r\n   \"address1\":\"test\",\r\n   \"address2\":\"test\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find customer - found",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/account/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"account",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
